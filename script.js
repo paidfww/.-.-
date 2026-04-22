@@ -1,113 +1,94 @@
-/**
- * script.js
- * Функционал: Тақырып ауыстыру, Анимациялар (Intersection Observer),
- * Groq API арқылы чат және Сұраныс санауышы.
- */
+// ============================================================
+// ЖИ API интеграциясы және интерактивті функционал
+// ============================================================
 
-// --------------------------------------------------------------
-// 1. Айнымалылар мен DOM элементтеріне сілтемелер
-// --------------------------------------------------------------
+// ---------- API КОНФИГУРАЦИЯСЫ ----------
+// Groq API кілті (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)
+const GROQ_API_KEY = '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';
+const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+const MODEL_NAME = 'llama3-70b-8192';
 
-// Тақырып ауыстыру үшін
+// ---------- DOM ЭЛЕМЕНТТЕРІ ----------
 const themeToggleBtn = document.getElementById('theme-toggle');
 const bodyElement = document.body;
-
-// Карточкалар анимациясы үшін (Intersection Observer)
 const cards = document.querySelectorAll('.card');
-
-// Чат элементтері
 const chatHistory = document.getElementById('chat-history');
 const userInput = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
 const loadingIndicator = document.getElementById('loading-indicator');
-
-// Санауыш элементі
 const counterSpan = document.getElementById('request-counter');
+const apiWarning = document.getElementById('api-warning');
 
-// API параметрлері (Groq)
-// !!! НАЗАР АУДАРЫҢЫЗ: Мұнда өзіңіздің Groq API кілтіңізді жазыңыз !!!
-const GROQ_API_KEY = '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'; // <- ӨЗГЕРТІҢІЗ
-const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-// Модель ретінде Llama 3 70B пайдаланамыз (тегін және өте қуатты)
-const MODEL_NAME = 'llama3-70b-8192'; 
-
-// Сұраныс санауышының мәні
+// ---------- АЙНЫМАЛЫЛАР ----------
 let requestCount = 0;
 
-// --------------------------------------------------------------
-// 2. Қараңғы тақырыпты ауыстыру функциясы
-// --------------------------------------------------------------
+// ---------- API КІЛТІН ТЕКСЕРУ ----------
+function checkAPIKey() {
+    if (GROQ_API_KEY === 'gsk_your_api_key_here') {
+        apiWarning.style.display = 'block';
+        console.error('❌ API кілті енгізілмеген! script.js файлын өзгертіңіз.');
+        return false;
+    } else {
+        apiWarning.style.display = 'none';
+        console.log('✅ API кілті табылды, жұмыс істеуге дайын!');
+        return true;
+    }
+}
+
+// ---------- 1. ТАҚЫРЫП АУЫСТЫРУ ----------
 /**
- * Тақырыпты ашық/қараңғы арасында ауыстырады.
- * Батырма мәтінін де өзгертеді.
+ * Қараңғы/ашық тақырыпты ауыстырады және localStorage-та сақтайды
  */
 function toggleTheme() {
     bodyElement.classList.toggle('dark-theme');
     
-    // Батырма мәтінін жаңарту
     if (bodyElement.classList.contains('dark-theme')) {
-        themeToggleBtn.innerHTML = '☀️ Ашық тақырып';
-        localStorage.setItem('theme', 'dark'); // Қалауын сақтау
+        themeToggleBtn.innerHTML = '☀️ Ашық режим';
+        localStorage.setItem('theme', 'dark');
     } else {
-        themeToggleBtn.innerHTML = '🌙 Қараңғы тақырып';
+        themeToggleBtn.innerHTML = '🌙 Қараңғы режим';
         localStorage.setItem('theme', 'light');
     }
 }
 
-// Пайдаланушының бұрынғы таңдауын тексеру
+// Сақталған тақырыпты жүктеу
 const savedTheme = localStorage.getItem('theme');
 if (savedTheme === 'dark') {
     bodyElement.classList.add('dark-theme');
-    themeToggleBtn.innerHTML = '☀️ Ашық тақырып';
+    themeToggleBtn.innerHTML = '☀️ Ашық режим';
 }
 
-// Батырмаға тыңдаушы қосу
 themeToggleBtn.addEventListener('click', toggleTheme);
 
-// --------------------------------------------------------------
-// 3. Карточкалар анимациясы (Intersection Observer API)
-// --------------------------------------------------------------
+// ---------- 2. КАРТОЧКАЛАР АНИМАЦИЯСЫ ----------
 /**
- * Карточкалар экранға көрінген кезде оларға 'visible' классын қосады.
- * Бұл CSS арқылы плавный fade-in/up анимациясын іске қосады.
+ * Intersection Observer API арқылы карточкалардың пайда болу анимациясы
  */
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-        // Егер элемент көрінсе
         if (entry.isIntersecting) {
             entry.target.classList.add('visible');
-            // Көрінгеннен кейін бақылауды тоқтату (өнімділік үшін)
             observer.unobserve(entry.target);
         }
     });
-}, {
-    threshold: 0.1, // 10% көрінсе жеткілікті
-    rootMargin: '0px 0px -50px 0px' // Аздап экранға жақындағанда іске қосылады
-});
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-// Барлық карточкаларды бақылауға алу
-cards.forEach(card => {
-    observer.observe(card);
-});
+cards.forEach(card => observer.observe(card));
 
-// --------------------------------------------------------------
-// 4. Санауышты жаңарту функциясы
-// --------------------------------------------------------------
+// ---------- 3. САНАУЫШ ----------
 /**
- * Сұраныс санын 1-ге арттырып, интерфейстегі мәтінді жаңартады.
+ * Сұраныс санауышын 1-ге арттырады
  */
-function incrementRequestCounter() {
+function incrementCounter() {
     requestCount++;
-    counterSpan.textContent = `Жіберілген сұраныс: ${requestCount}`;
+    counterSpan.textContent = `📊 Сұраныс саны: ${requestCount}`;
 }
 
-// --------------------------------------------------------------
-// 5. Чатқа хабарлама қосу функциясы
-// --------------------------------------------------------------
+// ---------- 4. ЧАТ ФУНКЦИЯЛАРЫ ----------
 /**
- * Чат тарихы DIV-іне жаңа хабарлама қосады.
- * @param {string} text - Хабарлама мәтіні.
- * @param {string} sender - 'user' немесе 'bot'.
+ * Чатқа жаңа хабарлама қосады
+ * @param {string} text - Хабарлама мәтіні
+ * @param {string} sender - 'user' немесе 'bot'
  */
 function appendMessage(text, sender) {
     const messageDiv = document.createElement('div');
@@ -123,35 +104,25 @@ function appendMessage(text, sender) {
     
     messageDiv.appendChild(senderSpan);
     messageDiv.appendChild(textDiv);
-    
     chatHistory.appendChild(messageDiv);
-    
-    // Автоматты түрде төменге жылжыту
     chatHistory.scrollTop = chatHistory.scrollHeight;
 }
 
-// --------------------------------------------------------------
-// 6. Groq API-ге сұраныс жіберу функциясы
-// --------------------------------------------------------------
 /**
- * Пайдаланушы енгізген мәтінді алып, Groq API-ге жібереді.
- * Жауапты күтіп, нәтижені чатқа шығарады.
- * @param {string} userMessage - Пайдаланушының сұрағы.
+ * Groq API-ге сұраныс жібереді
+ * @param {string} userMessage - Пайдаланушы сұрағы
  */
-async function sendMessageToAI(userMessage) {
-    // Егер API кілті енгізілмесе, ескерту
-    if (GROQ_API_KEY === 'gsk_ВАШ_КЛЮЧ_ЗДЕСЬ') {
-        appendMessage("❌ Қате: API кілті табылмады. script.js файлындағы GROQ_API_KEY мәнін жаңартыңыз.", 'bot');
+async function sendToAI(userMessage) {
+    if (!checkAPIKey()) {
+        appendMessage('❌ API кілті жоқ. script.js файлын өзгертіңіз.', 'bot');
         return;
     }
 
-    // Жүктеу индикаторын көрсету
     loadingIndicator.style.display = 'flex';
     sendBtn.disabled = true;
     userInput.disabled = true;
 
     try {
-        // API-ге сұраныс дайындау
         const response = await fetch(GROQ_API_URL, {
             method: 'POST',
             headers: {
@@ -165,38 +136,28 @@ async function sendMessageToAI(userMessage) {
                         role: 'system',
                         content: 'Сіз пайдалы бағдарламалау көмекшісісіз. Қысқа, нақты және қазақ тілінде жауап беріңіз.'
                     },
-                    {
-                        role: 'user',
-                        content: userMessage
-                    }
+                    { role: 'user', content: userMessage }
                 ],
                 temperature: 0.7,
                 max_tokens: 1024
             })
         });
 
-        // Жауапты тексеру
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error?.message || `HTTP қатесі: ${response.status}`);
+            const error = await response.json();
+            throw new Error(error.error?.message || `Қате ${response.status}`);
         }
 
         const data = await response.json();
-        
-        // ЖИ жауабын алу
         const botReply = data.choices[0].message.content;
         
-        // Жауапты чатқа шығару
         appendMessage(botReply, 'bot');
-        
-        // Санауышты арттыру (сәтті сұраныс болғанда ғана)
-        incrementRequestCounter();
+        incrementCounter();
 
     } catch (error) {
         console.error('API қатесі:', error);
-        appendMessage(`⚠️ Қате орын алды: ${error.message}. API кілтіңізді және интернет байланысын тексеріңіз.`, 'bot');
+        appendMessage(`⚠️ Қате: ${error.message}`, 'bot');
     } finally {
-        // Жүктеу индикаторын жасыру және форманы қалпына келтіру
         loadingIndicator.style.display = 'none';
         sendBtn.disabled = false;
         userInput.disabled = false;
@@ -204,45 +165,30 @@ async function sendMessageToAI(userMessage) {
     }
 }
 
-// --------------------------------------------------------------
-// 7. Хабарламаны жіберу логикасы (Оқиға өңдеуші)
-// --------------------------------------------------------------
 /**
- * Пайдаланушы сұрағын өңдеп, ЖИ-ге жібереді.
+ * Хабарламаны жіберуді өңдейді
  */
 function handleSendMessage() {
     const message = userInput.value.trim();
-    
-    // Бос хабарламаны жібермеу
     if (message === '') return;
     
-    // Пайдаланушы хабарламасын чатқа қосу
     appendMessage(message, 'user');
-    
-    // Енгізу өрісін тазалау
     userInput.value = '';
-    
-    // ЖИ-ге сұраныс жіберу
-    sendMessageToAI(message);
+    sendToAI(message);
 }
 
-// Батырманы басқанда жіберу
+// Оқиға тыңдаушылары
 sendBtn.addEventListener('click', handleSendMessage);
-
-// Enter пернесін басқанда жіберу (Shift+Enter емес)
-userInput.addEventListener('keypress', (event) => {
-    if (event.key === 'Enter') {
-        event.preventDefault(); // Жаңа жол қосуды болдырмау
+userInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
         handleSendMessage();
     }
 });
 
-// Бет жүктелген кезде фокус енгізу өрісінде болсын
+// ---------- 5. БАСТАПҚЫ ЖҮКТЕУ ----------
 window.addEventListener('load', () => {
+    checkAPIKey();
     userInput.focus();
-    
-    // Егер API кілті өзгертілмесе, ескерту
-    if (GROQ_API_KEY === 'gsk_ВАШ_КЛЮЧ_ЗДЕСЬ') {
-        console.warn('Ескерту: Groq API кілті енгізілмеген!');
-    }
+    console.log('✅ Жоба сәтті жүктелді! API кілті белсенді.');
 });

@@ -1,11 +1,12 @@
 // ============================================================
-// ЖИ API интеграциясы - ТОЛЫҚ ЖҰМЫС ІСТЕЙТІН НҰСҚА
+// ЖИ API интеграциясы - ЖАҢА МОДЕЛЬМЕН
 // ============================================================
 
 // ---------- API КОНФИГУРАЦИЯСЫ ----------
 const GROQ_API_KEY = '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';
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-const MODEL_NAME = 'llama3-70b-8192';
+// ЖАҢА МОДЕЛЬ: llama-3.3-70b-versatile (ең жаңа және тұрақты)
+const MODEL_NAME = 'llama-3.3-70b-versatile';
 
 // ---------- DOM ЭЛЕМЕНТТЕРІ ----------
 const themeToggleBtn = document.getElementById('theme-toggle');
@@ -85,6 +86,7 @@ async function sendToAI(userMessage) {
 
     try {
         console.log('🔄 API-ге сұраныс жіберілуде...');
+        console.log('📋 Модель:', MODEL_NAME);
         
         const response = await fetch(GROQ_API_URL, {
             method: 'POST',
@@ -118,7 +120,7 @@ async function sendToAI(userMessage) {
         }
 
         const data = await response.json();
-        console.log('✅ API жауабы:', data);
+        console.log('✅ API жауабы алынды');
         
         const botReply = data.choices[0].message.content;
         
@@ -157,13 +159,16 @@ userInput.addEventListener('keypress', (e) => {
 window.addEventListener('load', () => {
     console.log('✅ Жоба жүктелді!');
     console.log('🔑 API кілті:', GROQ_API_KEY.substring(0, 10) + '...');
+    console.log('🤖 Модель:', MODEL_NAME);
     userInput.focus();
     
-    // API тесті
+    // Қолжетімді модельдерді тексеру
     fetch('https://api.groq.com/openai/v1/models', {
         headers: { 'Authorization': `Bearer ${GROQ_API_KEY}` }
     })
     .then(res => res.json())
-    .then(data => console.log('📋 Қолжетімді модельдер:', data))
+    .then(data => {
+        console.log('📋 Қолжетімді модельдер:', data.data.map(m => m.id));
+    })
     .catch(err => console.error('❌ API байланысы:', err));
 });

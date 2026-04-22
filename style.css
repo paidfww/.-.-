@@ -1,38 +1,31 @@
-/* style.css */
-
-/* CSS Айнымалылары (Ашық тақырып - Әдепкі) */
 :root {
     --bg-color: #f8fafc;
     --text-color: #1e293b;
     --card-bg: #ffffff;
-    --header-bg: #0f172a;
+    --header-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --header-text: #ffffff;
     --border-color: #e2e8f0;
     --shadow-color: rgba(0, 0, 0, 0.1);
-    --hover-shadow: rgba(0, 0, 0, 0.2);
     --chat-bot-bg: #f1f5f9;
     --chat-user-bg: #3b82f6;
     --input-bg: #ffffff;
-    --footer-bg: #e2e8f0;
+    --footer-bg: #1e293b;
 }
 
-/* Қараңғы тақырып айнымалылары */
 body.dark-theme {
     --bg-color: #0f172a;
     --text-color: #f1f5f9;
     --card-bg: #1e293b;
-    --header-bg: #020617;
+    --header-bg: linear-gradient(135deg, #1e3a8a 0%, #4c1d95 100%);
     --header-text: #f8fafc;
     --border-color: #334155;
     --shadow-color: rgba(0, 0, 0, 0.5);
-    --hover-shadow: rgba(255, 255, 255, 0.1);
     --chat-bot-bg: #334155;
     --chat-user-bg: #2563eb;
     --input-bg: #1e293b;
     --footer-bg: #020617;
 }
 
-/* Негізгі қалпына келтіру және базалық стильдер */
 * {
     margin: 0;
     padding: 0;
@@ -40,11 +33,11 @@ body.dark-theme {
 }
 
 body {
-    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    font-family: 'Segoe UI', system-ui, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.6;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: all 0.3s ease;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -52,7 +45,7 @@ body {
 
 /* Header */
 header {
-    background-color: var(--header-bg);
+    background: var(--header-bg);
     color: var(--header-text);
     padding: 1.5rem 1rem;
     margin-bottom: 2rem;
@@ -66,32 +59,40 @@ header {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
 }
 
 .header-controls {
     display: flex;
     align-items: center;
     gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+#request-counter {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-weight: bold;
 }
 
 .theme-btn {
     background-color: var(--card-bg);
     color: var(--text-color);
     border: none;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1.5rem;
     border-radius: 2rem;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 2px 4px var(--shadow-color);
     transition: all 0.3s ease;
 }
 
 .theme-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px var(--hover-shadow);
+    box-shadow: 0 4px 8px var(--shadow-color);
 }
 
-/* Main контейнер */
+/* Main */
 main {
     max-width: 1200px;
     margin: 0 auto;
@@ -106,25 +107,23 @@ section {
 
 h2 {
     margin-bottom: 1.5rem;
-    border-bottom: 2px solid var(--border-color);
+    border-bottom: 3px solid #667eea;
     padding-bottom: 0.5rem;
 }
 
-/* Карточкалар контейнері - Адаптивті Grid */
+/* Карточкалар */
 .cards-container {
     display: grid;
-    grid-template-columns: 1fr; /* Мобильді: 1 баған */
-    gap: 1.5rem;
+    grid-template-columns: 1fr;
+    gap: 2rem;
 }
 
-/* Десктоп: 3 баған */
 @media (min-width: 768px) {
     .cards-container {
         grid-template-columns: repeat(3, 1fr);
     }
 }
 
-/* Карточка стилі */
 .card {
     background-color: var(--card-bg);
     border-radius: 1rem;
@@ -132,42 +131,33 @@ h2 {
     box-shadow: 0 10px 15px -3px var(--shadow-color);
     border: 1px solid var(--border-color);
     transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    /* Анимация үшін бастапқы күй */
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s, background-color 0.3s;
+    transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s;
 }
 
-/* Intersection Observer арқылы қосылатын класс */
 .card.visible {
     opacity: 1;
     transform: translateY(0);
 }
 
-/* Hover эффекті */
 .card:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 20px 25px -5px var(--hover-shadow);
-    background-color: var(--card-bg);
-    filter: brightness(1.02);
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 25px -5px var(--shadow-color);
 }
 
 .card-icon {
-    font-size: 2.5rem;
+    font-size: 3rem;
     margin-bottom: 1rem;
 }
 
 .card h3 {
     font-size: 1.5rem;
     margin-bottom: 0.75rem;
-    color: var(--text-color);
 }
 
 .card-desc {
     margin-bottom: 1rem;
-    flex-grow: 1;
 }
 
 .card-link {
@@ -175,7 +165,7 @@ h2 {
     margin-top: 1rem;
     text-decoration: none;
     font-weight: 600;
-    color: #3b82f6;
+    color: #667eea;
     transition: color 0.2s;
 }
 
@@ -186,7 +176,7 @@ h2 {
 /* Тәжірибе бөлімі */
 .experience-content {
     background-color: var(--card-bg);
-    padding: 1.5rem;
+    padding: 2rem;
     border-radius: 1rem;
     border: 1px solid var(--border-color);
 }
@@ -200,15 +190,14 @@ h2 {
     margin-bottom: 1rem;
 }
 
-/* Чат бөлімі */
-.chat-section {
-    margin-bottom: 2rem;
-}
-
-.chat-note {
-    font-size: 0.9rem;
-    color: #64748b;
+/* Чат */
+.api-key-warning {
+    background-color: #fee2e2;
+    color: #991b1b;
+    padding: 1rem;
+    border-radius: 0.5rem;
     margin-bottom: 1rem;
+    border: 1px solid #fecaca;
 }
 
 .chat-container {
@@ -218,8 +207,7 @@ h2 {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    height: 450px;
-    max-height: 70vh;
+    height: 500px;
 }
 
 .chat-history {
@@ -228,14 +216,19 @@ h2 {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 1rem;
 }
 
 .message {
-    max-width: 85%;
+    max-width: 80%;
     padding: 0.75rem 1rem;
     border-radius: 1rem;
-    word-wrap: break-word;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .bot-message {
@@ -256,10 +249,6 @@ h2 {
     font-weight: bold;
     margin-bottom: 0.25rem;
     opacity: 0.8;
-}
-
-.message-text {
-    line-height: 1.4;
 }
 
 .chat-input-area {
@@ -283,17 +272,22 @@ h2 {
 .send-btn {
     margin-left: 0.5rem;
     padding: 0 1.5rem;
-    background-color: #3b82f6;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
     border-radius: 2rem;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: transform 0.2s;
 }
 
 .send-btn:hover {
-    background-color: #2563eb;
+    transform: scale(1.05);
+}
+
+.send-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 /* Жүктеу индикаторы */
@@ -301,13 +295,13 @@ h2 {
     display: flex;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.5rem;
+    padding: 1rem;
 }
 
 .loading-indicator span {
-    width: 8px;
-    height: 8px;
-    background-color: var(--text-color);
+    width: 10px;
+    height: 10px;
+    background-color: #667eea;
     border-radius: 50%;
     animation: bounce 1.4s infinite ease-in-out both;
 }
@@ -323,9 +317,8 @@ h2 {
 /* Footer */
 footer {
     background-color: var(--footer-bg);
-    color: var(--text-color);
+    color: white;
     text-align: center;
     padding: 1.5rem;
     margin-top: 2rem;
-    border-top: 1px solid var(--border-color);
 }

@@ -22,29 +22,26 @@
         <section class="tools-section">
             <h2>🚀 Танымал ЖИ құралдары</h2>
             <div class="cards-container">
-                <!-- GitHub Copilot -->
                 <div class="card">
                     <div class="card-icon">🤖</div>
                     <h3>GitHub Copilot</h3>
                     <p class="card-desc">Сіздің AI жұп бағдарламашыңыз. Кодтың контекстін түсініп, IDE-дің ішінде бірден толық функциялар мен ұсыныстар береді.</p>
-                    <p><strong>Мүмкіндіктері:</strong> Код автодополнение, тест жазу, кодты түсіндіру, қателерді табу.</p>
+                    <p><strong>Мүмкіндіктері:</strong> Код автодополнение, тест жазу, кодты түсіндіру.</p>
                     <a href="https://github.com/features/copilot" target="_blank" class="card-link">Ресми сайтқа өту →</a>
                 </div>
 
-                <!-- ChatGPT -->
                 <div class="card">
                     <div class="card-icon">💬</div>
                     <h3>ChatGPT</h3>
                     <p class="card-desc">OpenAI әзірлеген көпмақсатты диалогтық модель. Күрделі логикалық есептерді шешуге және архитектуралық кеңес беруге қабілетті.</p>
-                    <p><strong>Мүмкіндіктері:</strong> Код генерациясы, рефакторинг, құжаттама құру, мәтінмен жұмыс.</p>
+                    <p><strong>Мүмкіндіктері:</strong> Код генерациясы, рефакторинг, құжаттама құру.</p>
                     <a href="https://chat.openai.com" target="_blank" class="card-link">Ресми сайтқа өту →</a>
                 </div>
 
-                <!-- Claude -->
                 <div class="card">
                     <div class="card-icon">📄</div>
                     <h3>Claude</h3>
-                    <p class="card-desc">Anthropic компаниясының ЖИ көмекшісі. Әсіресе үлкен контекстілік терезесімен және кодты терең талдауымен ерекшеленеді.</p>
+                    <p class="card-desc">Anthropic компаниясының ЖИ көмекшісі. Үлкен контекстілік терезесімен және кодты терең талдауымен ерекшеленеді.</p>
                     <p><strong>Мүмкіндіктері:</strong> Үлкен код базасын талдау, кодты түсіндіру, қауіпсіз код жазу.</p>
                     <a href="https://claude.ai" target="_blank" class="card-link">Ресми сайтқа өту →</a>
                 </div>
@@ -55,28 +52,25 @@
         <section class="experience-section">
             <h2>📝 Менің тәжірибем және рефлексия</h2>
             <div class="experience-content">
-                <p>Бұл жобаны орындау барысында мен <strong>Claude.ai</strong> және <strong>ChatGPT</strong> құралдарын пайдаландым. HTML құрылымын құруда қиындықтар туындаған жоқ, бірақ CSS Grid және Flexbox-ты дұрыс үйлестіру үшін ЖИ-дің көмегіне жүгіндім.</p>
+                <p>Бұл жобаны орындау барысында мен <strong>Claude.ai</strong> және <strong>ChatGPT</strong> құралдарын пайдаландым.</p>
                 
                 <h3>💡 Рефлексия сұрақтары</h3>
                 <ul class="reflection-list">
-                    <li><strong>Қандай құрал көп көмектесті?</strong> Бұл жобада маған ең көп Claude көмектесті. Себебі ол кодты блоктарға бөліп, әр функцияны өте мұқият түсіндіріп берді.</li>
-                    <li><strong>ЖИ нені дұрыс немесе ыңғайсыз жасады?</strong> ЖИ кейде ескірген синтаксис ұсынды. Мен оны заманауи ES6 стандартына келтірдім. Сонымен қатар, ЖИ ұсынған дизайн тым қарапайым болды, сондықтан CSS-ке анимациялар қостым.</li>
-                    <li><strong>ЖИ 5 жылдан кейін әзірлеуші мамандығын қалай өзгертеді?</strong> Менің ойымша, 5 жылдан кейін әзірлеушілер код жазудан гөрі, ЖИ-ге тапсырма беру және ЖИ жазған кодты тексеру мамандарына айналады. Қарапайым верстка толығымен автоматтандырылады.</li>
+                    <li><strong>Қандай құрал көп көмектесті?</strong> Claude көмектесті, себебі ол кодты блоктарға бөліп, әр функцияны мұқият түсіндірді.</li>
+                    <li><strong>ЖИ нені ыңғайсыз жасады?</strong> ЖИ кейде ескірген синтаксис ұсынды. Мен оны заманауи ES6 стандартына келтірдім.</li>
+                    <li><strong>ЖИ 5 жылдан кейін әзірлеуші мамандығын қалай өзгертеді?</strong> Әзірлеушілер ЖИ-ге тапсырма беру және кодты тексеру мамандарына айналады.</li>
                 </ul>
             </div>
         </section>
 
         <!-- Чат бөлімі -->
         <section class="chat-section">
-            <h2>💬 ЖИ Чат (Groq API)</h2>
-            <div class="api-key-warning" id="api-warning">
-                ⚠️ API кілті енгізілмеген! script.js файлында GROQ_API_KEY айнымалысын өзгертіңіз.
-            </div>
+            <h2>💬 ЖИ Чат (Groq API - Llama 3 70B)</h2>
             <div class="chat-container">
                 <div id="chat-history" class="chat-history">
                     <div class="message bot-message">
                         <div class="message-sender">🤖 ЖИ Ассистент</div>
-                        <div class="message-text">Сәлеметсіз бе! Мен сізге бағдарламалау бойынша көмектесе аламын. Сұрағыңызды жазыңыз.</div>
+                        <div class="message-text">Сәлеметсіз бе! Мен Llama 3 70B моделімін. Бағдарламалау бойынша сұрақтарыңызға жауап беремін.</div>
                     </div>
                 </div>
                 
@@ -86,13 +80,14 @@
                 </div>
                 <div id="loading-indicator" class="loading-indicator" style="display: none;">
                     <span></span><span></span><span></span>
+                    <span style="margin-left: 10px; font-size: 14px;">ЖИ жауап жазуда...</span>
                 </div>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>© 2026 | Практикалық жұмыс: ЖИ веб-әзірлеуде | Барлық құқықтар қорғалған</p>
+        <p>© 2026 | Практикалық жұмыс: ЖИ веб-әзірлеуде</p>
     </footer>
 
     <script src="script.js"></script>

@@ -1,0 +1,331 @@
+/* style.css */
+
+/* CSS Айнымалылары (Ашық тақырып - Әдепкі) */
+:root {
+    --bg-color: #f8fafc;
+    --text-color: #1e293b;
+    --card-bg: #ffffff;
+    --header-bg: #0f172a;
+    --header-text: #ffffff;
+    --border-color: #e2e8f0;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --hover-shadow: rgba(0, 0, 0, 0.2);
+    --chat-bot-bg: #f1f5f9;
+    --chat-user-bg: #3b82f6;
+    --input-bg: #ffffff;
+    --footer-bg: #e2e8f0;
+}
+
+/* Қараңғы тақырып айнымалылары */
+body.dark-theme {
+    --bg-color: #0f172a;
+    --text-color: #f1f5f9;
+    --card-bg: #1e293b;
+    --header-bg: #020617;
+    --header-text: #f8fafc;
+    --border-color: #334155;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    --hover-shadow: rgba(255, 255, 255, 0.1);
+    --chat-bot-bg: #334155;
+    --chat-user-bg: #2563eb;
+    --input-bg: #1e293b;
+    --footer-bg: #020617;
+}
+
+/* Негізгі қалпына келтіру және базалық стильдер */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+header {
+    background-color: var(--header-bg);
+    color: var(--header-text);
+    padding: 1.5rem 1rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.theme-btn {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    transition: all 0.3s ease;
+}
+
+.theme-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--hover-shadow);
+}
+
+/* Main контейнер */
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    flex-grow: 1;
+    width: 100%;
+}
+
+section {
+    margin-bottom: 3rem;
+}
+
+h2 {
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+/* Карточкалар контейнері - Адаптивті Grid */
+.cards-container {
+    display: grid;
+    grid-template-columns: 1fr; /* Мобильді: 1 баған */
+    gap: 1.5rem;
+}
+
+/* Десктоп: 3 баған */
+@media (min-width: 768px) {
+    .cards-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Карточка стилі */
+.card {
+    background-color: var(--card-bg);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 10px 15px -3px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    /* Анимация үшін бастапқы күй */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s, background-color 0.3s;
+}
+
+/* Intersection Observer арқылы қосылатын класс */
+.card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Hover эффекті */
+.card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 20px 25px -5px var(--hover-shadow);
+    background-color: var(--card-bg);
+    filter: brightness(1.02);
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+}
+
+.card-desc {
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.card-link {
+    display: inline-block;
+    margin-top: 1rem;
+    text-decoration: none;
+    font-weight: 600;
+    color: #3b82f6;
+    transition: color 0.2s;
+}
+
+.card-link:hover {
+    text-decoration: underline;
+}
+
+/* Тәжірибе бөлімі */
+.experience-content {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid var(--border-color);
+}
+
+.reflection-list {
+    margin-top: 1rem;
+    padding-left: 1.5rem;
+}
+
+.reflection-list li {
+    margin-bottom: 1rem;
+}
+
+/* Чат бөлімі */
+.chat-section {
+    margin-bottom: 2rem;
+}
+
+.chat-note {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 1rem;
+}
+
+.chat-container {
+    background-color: var(--card-bg);
+    border-radius: 1rem;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 450px;
+    max-height: 70vh;
+}
+
+.chat-history {
+    flex-grow: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.message {
+    max-width: 85%;
+    padding: 0.75rem 1rem;
+    border-radius: 1rem;
+    word-wrap: break-word;
+}
+
+.bot-message {
+    align-self: flex-start;
+    background-color: var(--chat-bot-bg);
+    border-bottom-left-radius: 0.2rem;
+}
+
+.user-message {
+    align-self: flex-end;
+    background-color: var(--chat-user-bg);
+    color: white;
+    border-bottom-right-radius: 0.2rem;
+}
+
+.message-sender {
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+    opacity: 0.8;
+}
+
+.message-text {
+    line-height: 1.4;
+}
+
+.chat-input-area {
+    display: flex;
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+}
+
+#user-input {
+    flex-grow: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 2rem;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    outline: none;
+    font-size: 1rem;
+}
+
+.send-btn {
+    margin-left: 0.5rem;
+    padding: 0 1.5rem;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.send-btn:hover {
+    background-color: #2563eb;
+}
+
+/* Жүктеу индикаторы */
+.loading-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+}
+
+.loading-indicator span {
+    width: 8px;
+    height: 8px;
+    background-color: var(--text-color);
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.loading-indicator span:nth-child(1) { animation-delay: -0.32s; }
+.loading-indicator span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
+}
+
+/* Footer */
+footer {
+    background-color: var(--footer-bg);
+    color: var(--text-color);
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
